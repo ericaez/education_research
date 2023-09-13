@@ -5,24 +5,24 @@ library(grid)
 state_abbreviations_vector <- c("ca"="CA", "nyc"="NYC", "tx"="TX", "il"="IL")
 
 # Read the sample data
-data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/mathpass_by_income.csv", col_types = cols(`...1` = col_skip()))
-colnames(data) <- c("state", "income_level", "2015", "2016", "2017", "2018", "2019", "2021" )
+data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/mathpass_by_hispanic.csv", col_types = cols(`...1` = col_skip()))
+colnames(data) <- c("state", "h_level", "2015", "2016", "2017", "2018", "2019", "2021" )
 
 # Reshape the data to long format
 data_long <- data %>%
   pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "ELA_Pass_Rate") %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
-  group_by(state, income_level) %>%
-  arrange(state, income_level, Year) %>%
+  group_by(state, h_level) %>%
+  arrange(state, h_level, Year) %>%
   mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
   ungroup()
 
-# Before mutating the income_level column
-data_long$Original_Group <- data_long$income_level
+# Before mutating the h_level column
+data_long$Original_Group <- data_long$h_level
 
 # Calculate the change from the baseline for each state-year
 data_long <- data_long %>%
-  group_by(state, income_level) %>%
+  group_by(state, h_level) %>%
   mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
   ungroup()
 
@@ -31,15 +31,15 @@ data_long$YearLegend <- ifelse(data_long$Year == "2021", "2021", "< 2021")
 
 # Create custom y-axis labels
 data_long <- data_long %>%
-  mutate(income_level = case_when(
-    income_level == "mid" ~ paste0("   ", state_abbreviations_vector[state], "      Mid"),
-    income_level == "high" ~ "High",
-    income_level == "low" ~ "Low",
-    TRUE ~ as.character(income_level)
+  mutate(h_level = case_when(
+    h_level == "mid" ~ paste0("   ", state_abbreviations_vector[state], "      Mid"),
+    h_level == "high" ~ "High",
+    h_level == "low" ~ "Low",
+    TRUE ~ as.character(h_level)
   ))
 
 # Explicitly order the Groupså
-data_long$income_level <- factor(data_long$income_level, 
+data_long$h_level <- factor(data_long$h_level, 
                           levels = c("High",
                                      paste0("   ", state_abbreviations_vector[unique(data_long$state)], "      Mid"),
                                      "Low"))
@@ -49,10 +49,10 @@ print(unique(data_long$Original_Group))
 
 
 # Continue with the plot
-p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
-  scale_x_continuous(limits = c(-30, 10), breaks = seq(-20, 10, by = 5)) +
+p <- ggplot(data_long, aes(x = Delta_Change, y = h_level)) +
+  scale_x_continuous(limits = c(-40, 10), breaks = seq(-40, 10, by = 10)) +
   geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
-  # Modify the geom_point to color based on income_level and define the aesthetic mapping
+  # Modify the geom_point to color based on h_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors
   scale_color_manual(values = c("low" = "#d3d3d3", "mid" = "#A9A9A9", "high" = "#000000")) +
@@ -60,7 +60,7 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
   labs(x = "Math Pass Rate Change from Baseline", 
        y = "State", 
-       color = "Income Class Level") +
+       color = "Hispanic Poplation Level") +
   scale_y_discrete(expand = c(0.85, 0.85)) +
   facet_grid(state~., scales = "free", space = "free") + 
   theme_minimal() +
@@ -89,32 +89,34 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
 
 print(p)
 
-ggsave(filename = "/Users/natan/Dev/education_research/figures/mathpass_by_income.png", bg = "white", plot = p, width = 5, height = 8)
+ggsave(filename = "/Users/natan/Dev/education_research/figures/mathpass_by_hispanic.png", bg = "white", plot = p, width = 5, height = 8)
 
 rm(list = ls())
+
+
 
 
 state_abbreviations_vector <- c("ca"="CA", "nyc"="NYC", "tx"="TX", "il"="IL")
 
 # Read the sample data
-data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/elapass_by_income.csv", col_types = cols(`...1` = col_skip()))
-colnames(data) <- c("state", "income_level", "2015", "2016", "2017", "2018", "2019", "2021" )
+data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/elapass_by_hispanic.csv", col_types = cols(`...1` = col_skip()))
+colnames(data) <- c("state", "h_level", "2015", "2016", "2017", "2018", "2019", "2021" )
 
 # Reshape the data to long format
 data_long <- data %>%
   pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "ELA_Pass_Rate") %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
-  group_by(state, income_level) %>%
-  arrange(state, income_level, Year) %>%
+  group_by(state, h_level) %>%
+  arrange(state, h_level, Year) %>%
   mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
   ungroup()
 
-# Before mutating the income_level column
-data_long$Original_Group <- data_long$income_level
+# Before mutating the h_level column
+data_long$Original_Group <- data_long$h_level
 
 # Calculate the change from the baseline for each state-year
 data_long <- data_long %>%
-  group_by(state, income_level) %>%
+  group_by(state, h_level) %>%
   mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
   ungroup()
 
@@ -123,28 +125,28 @@ data_long$YearLegend <- ifelse(data_long$Year == "2021", "2021", "< 2021")
 
 # Create custom y-axis labels
 data_long <- data_long %>%
-  mutate(income_level = case_when(
-    income_level == "mid" ~ paste0("   ", state_abbreviations_vector[state], "      Mid"),
-    income_level == "high" ~ "High",
-    income_level == "low" ~ "Low",
-    TRUE ~ as.character(income_level)
+  mutate(h_level = case_when(
+    h_level == "mid" ~ paste0("   ", state_abbreviations_vector[state], "      Mid"),
+    h_level == "high" ~ "High",
+    h_level == "low" ~ "Low",
+    TRUE ~ as.character(h_level)
   ))
 
 # Explicitly order the Groupså
-data_long$income_level <- factor(data_long$income_level, 
-                                 levels = c("High",
-                                            paste0("   ", state_abbreviations_vector[unique(data_long$state)], "      Mid"),
-                                            "Low"))
+data_long$h_level <- factor(data_long$h_level, 
+                            levels = c("High",
+                                       paste0("   ", state_abbreviations_vector[unique(data_long$state)], "      Mid"),
+                                       "Low"))
 
 
 print(unique(data_long$Original_Group))
 
 
 # Continue with the plot
-p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
-  scale_x_continuous(limits = c(-30, 10), breaks = seq(-20, 10, by = 5)) +
+p <- ggplot(data_long, aes(x = Delta_Change, y = h_level)) +
+  scale_x_continuous(limits = c(-40, 10), breaks = seq(-40, 10, by = 10)) +
   geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
-  # Modify the geom_point to color based on income_level and define the aesthetic mapping
+  # Modify the geom_point to color based on h_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors
   scale_color_manual(values = c("low" = "#d3d3d3", "mid" = "#A9A9A9", "high" = "#000000")) +
@@ -152,7 +154,7 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
   labs(x = "ELA Pass Rate Change from Baseline", 
        y = "State", 
-       color = "Income Class Level") +
+       color = "Hispanic Poplation Level") +
   scale_y_discrete(expand = c(0.85, 0.85)) +
   facet_grid(state~., scales = "free", space = "free") + 
   theme_minimal() +
@@ -181,8 +183,6 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
 
 print(p)
 
-ggsave(filename = "/Users/natan/Dev/education_research/figures/elapass_by_income.png", bg = "white", plot = p, width = 5, height = 8)
+ggsave(filename = "/Users/natan/Dev/education_research/figures/elapass_by_hispanic.png", bg = "white", plot = p, width = 5, height = 8)
 
 rm(list = ls())
-
-
