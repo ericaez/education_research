@@ -52,7 +52,7 @@ data_long$state <- state_abbreviations_vector[data_long$state]
 # Create the scatter plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
   geom_vline(xintercept = 0, color = "gray", size = 0.5) +
-  scale_x_continuous(limits = c(-25, 15), breaks = seq(-8, 8, by = 4)) +
+  scale_x_continuous(limits = c(-15, 15), breaks = seq(-8, 8, by = 4)) +
   geom_point(aes(shape = YearLegend, size = YearLegend), size = 5) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
@@ -129,7 +129,7 @@ data_long$state <- state_abbreviations_vector[data_long$state]
 # Create the scatter plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
   geom_vline(xintercept = 0, color = "gray", size = 0.5) +
-  scale_x_continuous(limits = c(-25, 15), breaks = seq(-8, 8, by = 4)) +
+  scale_x_continuous(limits = c(-10, 10), breaks = seq(-8, 8, by = 4)) +
   geom_point(aes(shape = YearLegend, size = YearLegend), size = 5) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
@@ -178,7 +178,7 @@ print(state_abbreviations_vector["california"])
 
 # Read the data
 data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/dropout_by_year.csv",
-                 col_names = c("ID", "state", "2015", "2016", "2017", "2018", "2019", "2021"), skip = 1)  
+                 col_names = c("ID", "state", "2017", "2018", "2019", "2021"), skip = 1)  
 
 # Reshape the data to long format
 data_long <- data %>%
@@ -207,12 +207,12 @@ data_long$state <- state_abbreviations_vector[data_long$state]
 # Create the scatter plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
   geom_vline(xintercept = 0, color = "gray", size = 0.5) +
-  scale_x_continuous(limits = c(-25, 15), breaks = seq(-8, 8, by = 4)) +
+  scale_x_continuous(limits = c(-5, 5), breaks = seq(-8, 8, by = 2)) +
   geom_point(aes(shape = YearLegend, size = YearLegend), size = 5) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
   labs(x = "Dropout Rate Change from Baseline", y ="State") +
-  scale_y_discrete(expand = c(2, 2)) +
+  scale_y_discrete(expand = c(1.25, 1.25)) +
   coord_fixed(ratio = 3) +
   theme_minimal() +
   theme(

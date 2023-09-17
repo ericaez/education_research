@@ -68,61 +68,100 @@ final_cols = [
       ]
 */
 
-ssc install reghdfe
+// ssc install reghdfe
 
 
 // IMPORT MATH DATASET
-insheet using "/Users/natan/Dev/virtual_mode_research/final_data_all_states/mathpass_district_allstates.csv", clear
+insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_mathpass.csv", clear
 
 set emptycells drop 
+drop if state == "nyc"
 
 encode schoolcode, gen(schoolcodenum)
 encode districtcode, gen(district)
 encode countycode,gen(county)
 encode state, gen(statecode)
 
-g H_int = hispanic * remote
-g B_int = black * remote
-g lowincome_int = remote * lowincome
 
-// Define periods
-gen period_before = year <= 2019
-gen period_after = year > 2019
-
-// Run the regression for the before 2019 period
-reghdfe mathpass white black hispanic charter i.statecode i.year lowincome ///
-[aweight=totaltested] if period_before == 1, absorb(district schoolcode) cluster(district) 
-
-estimates store benchmark
-
-// Predict mathpass for the 2017-2019 period
-predict mathpass_expected if period_before == 1, xb
-
-// Define performance_diff for the 2019-2021 period
-gen performance_diff = mathpass - mathpass_expected 
-
-// Run the regression on performance_diff for the 2019-2021 period
-reg performance_diff remote white black hispanic charter lowincome ///
-[aweight=totaltested] if period_after == 1, robust
-
-
+/// SCHOOL FE, NO INTERACTION ///
 
 reghdfe mathpass hybridper virtualper white black hispanic ///
 charter i.statecode i.year lowincome [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe mathpass remote H_int B_int /// 
+reghdfe mathpass schoolmode white black hispanic ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, RACE INTERACTION ///
+
+g hispanic_virtual_int = hispanic * virtualper
+g hispanic_hybrid_int = hispanic * hybridper
+g black_virtual_int = black * virtualper
+g black_hybrid_int = black * hybridper
+
+g hispanic_int = hispanic * schoolmode
+g black_int = black * schoolmode
+
+reghdfe mathpass schoolmode hispanic_int black_int /// 
 white black hispanic charter lowincome ///
 i.statecode i.year [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe mathpass remote white black hispanic /// 
-charter i.statecode##i.year lowincome [aweight=totaltested], ///
+reghdfe mathpass virtualper hybridper hispanic_virtual_int /// 
+hispanic_hybrid_int black_virtual_int black_hybrid_int ///
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe mathpass remote H_int B_int white black /// 
-hispanic charter i.statecode##i.year /// 
-lowincome [aweight=totaltested], ///
+
+/// SCHOOL FE, LOW INCOME INTERACTION ///
+
+g lowincome_virtual_int = lowincome * virtualper
+g lowincome_hybrid_int = lowincome * hybridper
+
+g lowincome_int = lowincome * schoolmode
+
+reghdfe mathpass schoolmode lowincome_int /// 
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe mathpass virtualper hybridper lowincome_virtual_int /// 
+lowincome_hybrid_int ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, CHARTER INTERACTION ///
+
+g charter_virtual_int = charter * virtualper
+g charter_hybrid_int = charter * hybridper
+
+g charter_int = charter * schoolmode
+
+reghdfe mathpass schoolmode charter_int /// 
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe mathpass virtualper hybridper charter_virtual_int /// 
+charter_hybrid_int ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, STATE-YEAR INTERACTION ///
+
+reghdfe mathpass schoolmode charter_int /// 
+white black hispanic charter lowincome ///
+i.statecode##i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe mathpass virtualper hybridper charter_virtual_int /// 
+charter_hybrid_int ///
+charter i.statecode##i.year lowincome [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
 
@@ -130,76 +169,193 @@ absorb(district schoolcode) cluster(district)
 
 
 // IMPORT ELA DATASET
-insheet using "/Users/natan/Dev/virtual_mode_research/final_data_all_states/elapass_district_allstates.csv", clear
+insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_elapass.csv", clear
+
+set emptycells drop 
+drop if state == "nyc"
 
 encode schoolcode, gen(schoolcodenum)
 encode districtcode, gen(district)
 encode countycode,gen(county)
 encode state, gen(statecode)
 
-g H_int = hispanic * remote
-g B_int = black * remote
-g lowincome_int = remote * lowincome
 
-// REGRESSIONS FOR ELA PASS RATE
-reghdfe elapass remote white black hispanic charter /// 
-i.statecode i.year lowincome [aweight=totaltested], ///
-absorb(district schoolcode) cluster(district)
+/// SCHOOL FE, NO INTERACTION ///
 
 reghdfe elapass hybridper virtualper white black hispanic ///
 charter i.statecode i.year lowincome [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe elapass remote H_int B_int /// 
+reghdfe elapass schoolmode white black hispanic ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, RACE INTERACTION ///
+
+g hispanic_virtual_int = hispanic * virtualper
+g hispanic_hybrid_int = hispanic * hybridper
+g black_virtual_int = black * virtualper
+g black_hybrid_int = black * hybridper
+
+g hispanic_int = hispanic * schoolmode
+g black_int = black * schoolmode
+
+reghdfe elapass schoolmode hispanic_int black_int /// 
 white black hispanic charter lowincome ///
 i.statecode i.year [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe elapass remote white black hispanic /// 
+reghdfe elapass virtualper hybridper hispanic_virtual_int /// 
+hispanic_hybrid_int black_virtual_int black_hybrid_int ///
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, LOW INCOME INTERACTION ///
+
+g lowincome_virtual_int = lowincome * virtualper
+g lowincome_hybrid_int = lowincome * hybridper
+
+g lowincome_int = lowincome * schoolmode
+
+reghdfe elapass schoolmode lowincome_int /// 
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe elapass virtualper hybridper lowincome_virtual_int /// 
+lowincome_hybrid_int ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, CHARTER INTERACTION ///
+
+g charter_virtual_int = charter * virtualper
+g charter_hybrid_int = charter * hybridper
+
+g charter_int = charter * schoolmode
+
+reghdfe elapass schoolmode charter_int /// 
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe elapass virtualper hybridper charter_virtual_int /// 
+charter_hybrid_int ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, STATE-YEAR INTERACTION ///
+
+reghdfe elapass schoolmode charter_int /// 
+white black hispanic charter lowincome ///
+i.statecode##i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe elapass virtualper hybridper charter_virtual_int /// 
+charter_hybrid_int ///
 charter i.statecode##i.year lowincome [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe elapass remote H_int B_int white black /// 
-hispanic charter i.statecode##i.year /// 
-lowincome [aweight=totaltested], ///
-absorb(district schoolcode) cluster(district)
 
 
 
 
 // IMPORT DROPOUT DATASET
-insheet using "/Users/natan/Dev/virtual_mode_research/final_data_all_states/dropout_district_allstates.csv", clear
+insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_dropout.csv", clear
+
+set emptycells drop 
+drop if state == "nyc"
 
 encode schoolcode, gen(schoolcodenum)
 encode districtcode, gen(district)
+encode countycode,gen(county)
 encode state, gen(statecode)
 
-drop if totalenrolled < 0
 
-g H_int = hispanic * remote
-g B_int = black * remote
-g lowincome_int = remote * lowincome
-
-reghdfe dropout remote white black hispanic charter /// 
-i.statecode i.year lowincome [aweight=totalenrolled], ///
-absorb(district schoolcode) cluster(district)
+/// SCHOOL FE, NO INTERACTION ///
 
 reghdfe dropout hybridper virtualper white black hispanic ///
-charter i.statecode i.year lowincome [aweight=totalenrolled], ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe dropout remote H_int B_int /// 
+reghdfe dropout schoolmode white black hispanic ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, RACE INTERACTION ///
+
+g hispanic_virtual_int = hispanic * virtualper
+g hispanic_hybrid_int = hispanic * hybridper
+g black_virtual_int = black * virtualper
+g black_hybrid_int = black * hybridper
+
+g hispanic_int = hispanic * schoolmode
+g black_int = black * schoolmode
+
+reghdfe dropout schoolmode hispanic_int black_int /// 
 white black hispanic charter lowincome ///
-i.statecode i.year [aweight=totalenrolled], ///
+i.statecode i.year [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe dropout remote white black hispanic /// 
-charter i.statecode##i.year lowincome [aweight=totalenrolled], ///
+reghdfe dropout virtualper hybridper hispanic_virtual_int /// 
+hispanic_hybrid_int black_virtual_int black_hybrid_int ///
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
-reghdfe dropout remote H_int B_int white black /// 
-hispanic charter i.statecode##i.year /// 
-lowincome [aweight=totalenrolled], ///
+
+/// SCHOOL FE, LOW INCOME INTERACTION ///
+
+g lowincome_virtual_int = lowincome * virtualper
+g lowincome_hybrid_int = lowincome * hybridper
+
+g lowincome_int = lowincome * schoolmode
+
+reghdfe dropout schoolmode lowincome_int /// 
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe dropout virtualper hybridper lowincome_virtual_int /// 
+lowincome_hybrid_int ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, CHARTER INTERACTION ///
+
+g charter_virtual_int = charter * virtualper
+g charter_hybrid_int = charter * hybridper
+
+g charter_int = charter * schoolmode
+
+reghdfe dropout schoolmode charter_int /// 
+white black hispanic charter lowincome ///
+i.statecode i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe dropout virtualper hybridper charter_virtual_int /// 
+charter_hybrid_int ///
+charter i.statecode i.year lowincome [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+
+/// SCHOOL FE, STATE-YEAR INTERACTION ///
+
+reghdfe dropout schoolmode charter_int /// 
+white black hispanic charter lowincome ///
+i.statecode##i.year [aweight=totaltested], ///
+absorb(district schoolcode) cluster(district)
+
+reghdfe dropout virtualper hybridper charter_virtual_int /// 
+charter_hybrid_int ///
+charter i.statecode##i.year lowincome [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
 
 
@@ -208,7 +364,7 @@ absorb(district schoolcode) cluster(district)
 
 esttab DROP_NORMAL using "/Dev/virtual_mode_research/table12.tex", ///
 drop(_cons white black hispanic t21) ///
-coeflabels(virtual_per "Virtual" hybrid_per "Hybrid" ///
+coeflabels(virtualper "Virtual" hybridper "Hybrid" ///
 lowincome "Low Income"  ///
 ) ///
 refcat(lowincome "\textbf{\emph{Controls}}") ///
@@ -253,10 +409,5 @@ nonotes mtitles("ELA" "MATH" "DROP") nonumbers ///
 stats(N, fmt(%18.0g) labels("\midrule Observations")) ///
 mgroups("\textbf{\emph{Dependent Variables}}", pattern(1 0 0 0) ///
 prefix(\multicolumn{@span}{c}{) suffix(}) span erepeat(\cmidrule(lr){@span}))
-
-
-
-
-
 
 

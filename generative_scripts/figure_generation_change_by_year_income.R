@@ -50,7 +50,7 @@ print(unique(data_long$Original_Group))
 
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
-  scale_x_continuous(limits = c(-30, 10), breaks = seq(-20, 10, by = 5)) +
+  scale_x_continuous(limits = c(-15, 10), breaks = seq(-20, 10, by = 5)) +
   geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
   # Modify the geom_point to color based on income_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
@@ -146,7 +146,7 @@ print(unique(data_long$Original_Group))
 
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
-  scale_x_continuous(limits = c(-30, 10), breaks = seq(-20, 10, by = 5)) +
+  scale_x_continuous(limits = c(-15, 10), breaks = seq(-20, 10, by = 5)) +
   geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
   # Modify the geom_point to color based on income_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
@@ -198,7 +198,7 @@ state_abbreviations_vector <- c("ca"="CA", "nyc"="NYC", "tx"="TX", "il"="IL")
 
 # Read the sample data
 data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/dropout_by_income.csv", col_types = cols(`...1` = col_skip()))
-colnames(data) <- c("state", "income_level", "2015", "2016", "2017", "2018", "2019", "2021" )
+colnames(data) <- c("state", "income_level", "2017", "2018", "2019", "2021" )
 
 # Reshape the data to long format
 data_long <- data %>%
@@ -242,7 +242,7 @@ print(unique(data_long$Original_Group))
 
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = income_level)) +
-  scale_x_continuous(limits = c(-30, 10), breaks = seq(-20, 10, by = 5)) +
+  scale_x_continuous(limits = c(-5, 5), breaks = seq(-20, 10, by = 2)) +
   geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
   # Modify the geom_point to color based on income_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
