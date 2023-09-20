@@ -135,7 +135,7 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
   labs(x = "ELA Pass Rate Change from Baseline", y ="State") +
   scale_y_discrete(expand = c(2, 2)) +
-  coord_fixed(ratio = 3) +
+  coord_fixed(ratio = 2) +
   theme_minimal() +
   theme(
     strip.background = element_blank(),
@@ -213,7 +213,7 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
   labs(x = "Dropout Rate Change from Baseline", y ="State") +
   scale_y_discrete(expand = c(1.25, 1.25)) +
-  coord_fixed(ratio = 3) +
+  coord_fixed(ratio = 1.25) +
   theme_minimal() +
   theme(
     strip.background = element_blank(),
