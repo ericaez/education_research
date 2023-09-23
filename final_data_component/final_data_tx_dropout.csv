@@ -1,4 +1,4 @@
-,schoolcode,districtcode,countycode,year,charter,dropout,schoolmode,virtualper,hybridper,totalenroll,lowincome,white,black,hispanic,state
+,schoolcode,districtcode,countycode,year,charter,dropout,schoolmode,virtualper,hybridper,totalenrolled,lowincome,white,black,hispanic,state
 8,005902001tx,005902tx,005tx,2017,0.0,0,0.0,0.0,0.0,311,18.9711,89.3891,0.6431,8.0386,tx
 12,011901005tx,011901tx,011tx,2017,0.0,0,0.0,0.0,0.0,171,60.2339,25.1462,3.5088,67.8363,tx
 13,011905001tx,011905tx,011tx,2017,0.0,0,0.0,0.0,0.0,30,66.6667,40.0,0.0,60.0,tx
