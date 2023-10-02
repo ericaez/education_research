@@ -71,8 +71,39 @@ final_cols = [
 // ssc install reghdfe
 
 
+insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_mathpass.csv", clear
+
+estpost sum schoolmode virtualper hybridper white hispanic black lowincome charter
+est store MATH_DESC
+
+insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_elapass.csv", clear
+
+estpost sum schoolmode virtualper hybridper white hispanic black lowincome charter
+est store ELA_DESC
+
+// esttab A using "/Users/natan/Dev/education_research/tables/table_desc.tex", replace ///
+esttab MATH_DESC ELA_DESC using "/Dev/education_research/tables/table_desc_math_ela.tex", replace ///
+mtitles("\textbf{MATH}" "\textbf{ELA}") ///
+collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}}) ///
+cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0))") label nonumber f noobs alignment(S) booktabs
+
+insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_dropout.csv", clear
+
+estpost sum schoolmode virtualper hybridper white hispanic black lowincome charter
+est store DROPOUT_DESC
+
+// esttab A using "/Users/natan/Dev/education_research/tables/table_desc.tex", replace ///
+esttab DROPOUT_DESC using "/Dev/education_research/tables/table_desc_dropout.tex", replace ///
+mtitles("\textbf{DROPOUT}") ///
+collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}}) ///
+cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0))") label nonumber f noobs alignment(S) booktabs
+
+
+
+
 // IMPORT MATH DATASET
-insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_mathpass.csv", clear
+// insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_mathpass.csv", clear
+insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_mathpass.csv", clear
 
 set emptycells drop 
 drop if state == "nyc"
@@ -184,7 +215,8 @@ absorb(district schoolcode) cluster(district)
 
 
 // IMPORT ELA DATASET
-insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_elapass.csv", clear
+// insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_elapass.csv", clear
+insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_elapass.csv", clear
 
 set emptycells drop 
 drop if state == "nyc"
@@ -297,7 +329,8 @@ absorb(district schoolcode) cluster(district)
 
 
 // IMPORT DROPOUT DATASET
-insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_dropout.csv", clear
+// insheet using "/Users/natan/Dev/education_research/final_data_all_state/final_data_all_state_dropout.csv", clear
+insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_dropout.csv", clear
 
 set emptycells drop 
 
@@ -404,8 +437,6 @@ hispanic_hybrid_int hispanic_virtual_int black_hybrid_int black_virtual_int ///
 white black hispanic charter lowincome ///
 i.statecode##i.year [aweight=totaltested], ///
 absorb(district schoolcode) cluster(district)
-
-
 
 // esttab DROP_NORMAL using "/Users/natan/Dev/education_research/table/table1", ///
 // keep(_cons white black hispanic) ///
