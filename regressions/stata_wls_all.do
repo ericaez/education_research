@@ -76,16 +76,22 @@ insheet using "/Dev/education_research/final_data_all_state/final_data_all_state
 estpost sum schoolmode virtualper hybridper white hispanic black lowincome charter
 est store MATH_DESC
 
+// esttab A using "/Users/natan/Dev/education_research/tables/table_desc.tex", replace ///
+esttab MATH_DESC using "/Dev/education_research/tables/table_desc_math.tex", replace ///
+mtitles("\textbf{MATH}") ///
+collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}} \multicolumn{1}{l}{{Max}} \multicolumn{1}{l}{{Min}}) ///
+cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0)) max(fmt(0)) min(fmt(0))") label nonumber f noobs alignment(S) booktabs
+
 insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_elapass.csv", clear
 
 estpost sum schoolmode virtualper hybridper white hispanic black lowincome charter
 est store ELA_DESC
 
 // esttab A using "/Users/natan/Dev/education_research/tables/table_desc.tex", replace ///
-esttab MATH_DESC ELA_DESC using "/Dev/education_research/tables/table_desc_math_ela.tex", replace ///
-mtitles("\textbf{MATH}" "\textbf{ELA}") ///
-collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}}) ///
-cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0))") label nonumber f noobs alignment(S) booktabs
+esttab ELA_DESC using "/Dev/education_research/tables/table_desc_ela.tex", replace ///
+mtitles("\textbf{ELA}") ///
+collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}} \multicolumn{1}{l}{{Max}} \multicolumn{1}{l}{{Min}}) ///
+cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0)) max(fmt(0)) min(fmt(0))") label nonumber f noobs alignment(S) booktabs
 
 insheet using "/Dev/education_research/final_data_all_state/final_data_all_state_dropout.csv", clear
 
@@ -95,8 +101,8 @@ est store DROPOUT_DESC
 // esttab A using "/Users/natan/Dev/education_research/tables/table_desc.tex", replace ///
 esttab DROPOUT_DESC using "/Dev/education_research/tables/table_desc_dropout.tex", replace ///
 mtitles("\textbf{DROPOUT}") ///
-collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}}) ///
-cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0))") label nonumber f noobs alignment(S) booktabs
+collabels(\multicolumn{1}{c}{{Mean}} \multicolumn{1}{c}{{Std.Dev.}} \multicolumn{1}{l}{{Obs}} \multicolumn{1}{l}{{Max}} \multicolumn{1}{l}{{Min}}) ///
+cells("mean(fmt(2)) sd(fmt(2)) count(fmt(0)) max(fmt(0)) min(fmt(0))") label nonumber f noobs alignment(S) booktabs
 
 
 
