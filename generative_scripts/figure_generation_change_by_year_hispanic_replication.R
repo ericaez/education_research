@@ -8,22 +8,21 @@ state_abbreviations_vector <- c("ca"="CA", "nyc"="NYC", "tx"="TX", "il"="IL")
 data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/mathpass_by_hispanic.csv", col_types = cols(`...1` = col_skip()))
 colnames(data) <- c("state", "h_level", "2015", "2016", "2017", "2018", "2019", "2021" )
 
-# Reshape the data to long format
 data_long <- data %>%
   pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "ELA_Pass_Rate") %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
   group_by(state, h_level) %>%
   arrange(state, h_level, Year) %>%
-  mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
+  mutate(Average_Rate = mean(ELA_Pass_Rate, na.rm = TRUE)) %>%
   ungroup()
 
 # Before mutating the h_level column
 data_long$Original_Group <- data_long$h_level
 
-# Calculate the change from the baseline for each state-year
+# Calculate the change from the average for each state-year
 data_long <- data_long %>%
   group_by(state, h_level) %>%
-  mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
+  mutate(Delta_Change = ELA_Pass_Rate - Average_Rate) %>%
   ungroup()
 
 # Recode Year for legend
@@ -51,7 +50,7 @@ print(unique(data_long$Original_Group))
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = h_level)) +
   scale_x_continuous(limits = c(-20, 10), breaks = seq(-40, 10, by = 10)) +
-  geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   # Modify the geom_point to color based on h_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors
@@ -96,28 +95,28 @@ rm(list = ls())
 
 
 
+
 state_abbreviations_vector <- c("ca"="CA", "nyc"="NYC", "tx"="TX", "il"="IL")
 
 # Read the sample data
 data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/elapass_by_hispanic.csv", col_types = cols(`...1` = col_skip()))
 colnames(data) <- c("state", "h_level", "2015", "2016", "2017", "2018", "2019", "2021" )
 
-# Reshape the data to long format
 data_long <- data %>%
   pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "ELA_Pass_Rate") %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
   group_by(state, h_level) %>%
   arrange(state, h_level, Year) %>%
-  mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
+  mutate(Average_Rate = mean(ELA_Pass_Rate, na.rm = TRUE)) %>%
   ungroup()
 
 # Before mutating the h_level column
 data_long$Original_Group <- data_long$h_level
 
-# Calculate the change from the baseline for each state-year
+# Calculate the change from the average for each state-year
 data_long <- data_long %>%
   group_by(state, h_level) %>%
-  mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
+  mutate(Delta_Change = ELA_Pass_Rate - Average_Rate) %>%
   ungroup()
 
 # Recode Year for legend
@@ -145,7 +144,7 @@ print(unique(data_long$Original_Group))
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = h_level)) +
   scale_x_continuous(limits = c(-15, 10), breaks = seq(-40, 10, by = 5)) +
-  geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   # Modify the geom_point to color based on h_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors
@@ -197,24 +196,22 @@ state_abbreviations_vector <- c("ca"="CA", "nyc"="NYC", "tx"="TX", "il"="IL")
 data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/dropout_by_hispanic.csv", col_types = cols(`...1` = col_skip()))
 colnames(data) <- c("state", "h_level", "2017", "2018", "2019", "2021" )
 
-# Reshape the data to long format
 data_long <- data %>%
   pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "ELA_Pass_Rate") %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
   group_by(state, h_level) %>%
   arrange(state, h_level, Year) %>%
-  mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
+  mutate(Average_Rate = mean(ELA_Pass_Rate, na.rm = TRUE)) %>%
   ungroup()
 
 # Before mutating the h_level column
 data_long$Original_Group <- data_long$h_level
 
-# Calculate the change from the baseline for each state-year
+# Calculate the change from the average for each state-year
 data_long <- data_long %>%
   group_by(state, h_level) %>%
-  mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
+  mutate(Delta_Change = ELA_Pass_Rate - Average_Rate) %>%
   ungroup()
-
 # Recode Year for legend
 data_long$YearLegend <- ifelse(data_long$Year == "2021", "2021", "< 2021")
 
@@ -240,7 +237,7 @@ print(unique(data_long$Original_Group))
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = h_level)) +
   scale_x_continuous(limits = c(-10, 5), breaks = seq(-40, 10, by = 5)) +
-  geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   # Modify the geom_point to color based on h_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors

@@ -14,16 +14,16 @@ data_long <- data %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
   group_by(state, b_level) %>%
   arrange(state, b_level, Year) %>%
-  mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
+  mutate(Average_Rate = mean(ELA_Pass_Rate, na.rm = TRUE)) %>%
   ungroup()
 
-# Before mutating the b_level column
+# Before mutating the h_level column
 data_long$Original_Group <- data_long$b_level
 
-# Calculate the change from the baseline for each state-year
+# Calculate the change from the average for each state-year
 data_long <- data_long %>%
   group_by(state, b_level) %>%
-  mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
+  mutate(Delta_Change = ELA_Pass_Rate - Average_Rate) %>%
   ungroup()
 
 # Recode Year for legend
@@ -51,7 +51,7 @@ print(unique(data_long$Original_Group))
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = b_level)) +
   scale_x_continuous(limits = c(-25, 10), breaks = seq(-50, 10, by = 10)) +
-  geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   # Modify the geom_point to color based on b_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors
@@ -107,16 +107,16 @@ data_long <- data %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
   group_by(state, b_level) %>%
   arrange(state, b_level, Year) %>%
-  mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
+  mutate(Average_Rate = mean(ELA_Pass_Rate, na.rm = TRUE)) %>%
   ungroup()
 
-# Before mutating the b_level column
+# Before mutating the h_level column
 data_long$Original_Group <- data_long$b_level
 
-# Calculate the change from the baseline for each state-year
+# Calculate the change from the average for each state-year
 data_long <- data_long %>%
   group_by(state, b_level) %>%
-  mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
+  mutate(Delta_Change = ELA_Pass_Rate - Average_Rate) %>%
   ungroup()
 
 # Recode Year for legend
@@ -144,7 +144,7 @@ print(unique(data_long$Original_Group))
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = b_level)) +
   scale_x_continuous(limits = c(-25, 10), breaks = seq(-50, 10, by = 10)) +
-  geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   # Modify the geom_point to color based on b_level and define the aesthetic mapping
   geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
   # Add a scale_color_manual to specify the colors
@@ -202,16 +202,16 @@ data_long <- data %>%
   filter(!is.na(ELA_Pass_Rate)) %>%
   group_by(state, b_level) %>%
   arrange(state, b_level, Year) %>%
-  mutate(First_Non_NA = first(ELA_Pass_Rate, order_by = Year)) %>%
+  mutate(Average_Rate = mean(ELA_Pass_Rate, na.rm = TRUE)) %>%
   ungroup()
 
-# Before mutating the b_level column
+# Before mutating the h_level column
 data_long$Original_Group <- data_long$b_level
 
-# Calculate the change from the baseline for each state-year
+# Calculate the change from the average for each state-year
 data_long <- data_long %>%
   group_by(state, b_level) %>%
-  mutate(Delta_Change = ELA_Pass_Rate - First_Non_NA) %>%
+  mutate(Delta_Change = ELA_Pass_Rate - Average_Rate) %>%
   ungroup()
 
 # Recode Year for legend
@@ -239,13 +239,13 @@ print(unique(data_long$Original_Group))
 # Continue with the plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = b_level)) +
   scale_x_continuous(limits = c(-10, 5), breaks = seq(-50, 10, by = 10)) +
-  geom_vline(xintercept = 0, color = "darkred", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   # Modify the geom_point to color based on b_level and define the aesthetic mapping
-  geom_point(aes(shape = YearLegend, size = YearLegend, color = Original_Group), size = 5) +
+  geom_point(aes(color = Original_Group, shape = YearLegend, size = YearLegend), size = 5) +
   # Add a scale_color_manual to specify the colors
-  scale_color_manual(values = c("low" = "#d3d3d3", "mid" = "#A9A9A9", "high" = "#000000")) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
   scale_size_manual(name = "Year", values = c("2021" = 5, "< 2021" = 2)) +
+  scale_color_manual(values = c("low" = "#d3d3d3", "mid" = "#A9A9A9", "high" = "#000000")) +
   labs(x = "Dropout Rate Change from Baseline", 
        y = "State", 
        color = "Black Population Level") +

@@ -28,17 +28,18 @@ data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/mathp
 # Reshape the data to long format
 data_long <- data %>%
   select(-ID) %>% # remove the ID column
-  gather(key = "Year", value = "Variable_Pass_Rate", -state) %>%
-  group_by(state) %>%
-  arrange(Year) %>%
-  mutate(First_Non_NA = Variable_Pass_Rate[which.min(ifelse(is.na(Variable_Pass_Rate), Inf, row_number()))]) %>%
-  ungroup()
+  gather(key = "Year", value = "Variable_Pass_Rate", -state)
 
-
-# Calculate the change from the baseline for each state-year
+# Calculate average Variable_Pass_Rate of all non-null years for each state
 data_long <- data_long %>%
   group_by(state) %>%
-  mutate(Delta_Change = Variable_Pass_Rate - First_Non_NA) %>%
+  mutate(Avg_Non_NA_Years = mean(Variable_Pass_Rate, na.rm = TRUE)) %>%
+  ungroup()
+
+# Calculate the change from the average of all non-null years for each state-year
+data_long <- data_long %>%
+  group_by(state) %>%
+  mutate(Delta_Change = Variable_Pass_Rate - Avg_Non_NA_Years) %>%
   ungroup()
 
 # Remove NA rows
@@ -51,7 +52,7 @@ data_long$state <- state_abbreviations_vector[data_long$state]
 
 # Create the scatter plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
-  geom_vline(xintercept = 0, color = "gray", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   scale_x_continuous(limits = c(-15, 15), breaks = seq(-8, 8, by = 4)) +
   geom_point(aes(shape = YearLegend, size = YearLegend), size = 5) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
@@ -84,9 +85,9 @@ p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
     override.aes = list(size = c(6, 4.5)) # increase size here
   ))
 
-ggsave(filename = "/Users/natan/Dev/education_research/figures/mathpass_by_year.png", bg = "white", plot = p, width = 5, height = 8)
-
 print(p)
+
+ggsave(filename = "/Users/natan/Dev/education_research/figures/mathpass_by_year.png", bg = "white", plot = p, width = 5, height = 8)
 
 rm(list = ls())
 
@@ -105,17 +106,18 @@ data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/elapa
 # Reshape the data to long format
 data_long <- data %>%
   select(-ID) %>% # remove the ID column
-  gather(key = "Year", value = "Variable_Pass_Rate", -state) %>%
-  group_by(state) %>%
-  arrange(Year) %>%
-  mutate(First_Non_NA = Variable_Pass_Rate[which.min(ifelse(is.na(Variable_Pass_Rate), Inf, row_number()))]) %>%
-  ungroup()
+  gather(key = "Year", value = "Variable_Pass_Rate", -state)
 
-
-# Calculate the change from the baseline for each state-year
+# Calculate average Variable_Pass_Rate of all non-null years for each state
 data_long <- data_long %>%
   group_by(state) %>%
-  mutate(Delta_Change = Variable_Pass_Rate - First_Non_NA) %>%
+  mutate(Avg_Non_NA_Years = mean(Variable_Pass_Rate, na.rm = TRUE)) %>%
+  ungroup()
+
+# Calculate the change from the average of all non-null years for each state-year
+data_long <- data_long %>%
+  group_by(state) %>%
+  mutate(Delta_Change = Variable_Pass_Rate - Avg_Non_NA_Years) %>%
   ungroup()
 
 # Remove NA rows
@@ -128,7 +130,7 @@ data_long$state <- state_abbreviations_vector[data_long$state]
 
 # Create the scatter plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
-  geom_vline(xintercept = 0, color = "gray", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   scale_x_continuous(limits = c(-10, 10), breaks = seq(-8, 8, by = 4)) +
   geom_point(aes(shape = YearLegend, size = YearLegend), size = 5) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
@@ -183,17 +185,18 @@ data <- read_csv("/Users/natan/Dev/education_research/descriptive_analysis/dropo
 # Reshape the data to long format
 data_long <- data %>%
   select(-ID) %>% # remove the ID column
-  gather(key = "Year", value = "Variable_Pass_Rate", -state) %>%
-  group_by(state) %>%
-  arrange(Year) %>%
-  mutate(First_Non_NA = Variable_Pass_Rate[which.min(ifelse(is.na(Variable_Pass_Rate), Inf, row_number()))]) %>%
-  ungroup()
+  gather(key = "Year", value = "Variable_Pass_Rate", -state)
 
-
-# Calculate the change from the baseline for each state-year
+# Calculate average Variable_Pass_Rate of all non-null years for each state
 data_long <- data_long %>%
   group_by(state) %>%
-  mutate(Delta_Change = Variable_Pass_Rate - First_Non_NA) %>%
+  mutate(Avg_Non_NA_Years = mean(Variable_Pass_Rate, na.rm = TRUE)) %>%
+  ungroup()
+
+# Calculate the change from the average of all non-null years for each state-year
+data_long <- data_long %>%
+  group_by(state) %>%
+  mutate(Delta_Change = Variable_Pass_Rate - Avg_Non_NA_Years) %>%
   ungroup()
 
 # Remove NA rows
@@ -206,7 +209,7 @@ data_long$state <- state_abbreviations_vector[data_long$state]
 
 # Create the scatter plot
 p <- ggplot(data_long, aes(x = Delta_Change, y = state)) +
-  geom_vline(xintercept = 0, color = "gray", size = 0.5) +
+  geom_vline(xintercept = 0, color = "gray", size = 0.8, linetype="dotted") +
   scale_x_continuous(limits = c(-5, 5), breaks = seq(-8, 8, by = 2)) +
   geom_point(aes(shape = YearLegend, size = YearLegend), size = 5) +
   scale_shape_manual(name = "Year", values = c("2021" = 5, "< 2021" = 18)) +
