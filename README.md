@@ -1,4 +1,4 @@
-# education_research
+# Economics Education Research
 Investigating the effect of instruction modality on high school students' education outcomes
 
 ## Repository Description
