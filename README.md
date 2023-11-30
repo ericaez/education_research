@@ -1,15 +1,17 @@
 # Economics Education Research
 Building on Erica Zhou's final project for the course **ECON 383: Applied Econometrics** and our team's analysis in the [University of Chicago Econometrics Game 2023](https://economics.northwestern.edu/about/news/chicago-econometrics-game-winners.html), we extended our research to inform broader education policy. We conducted weighted least squares regression analyses with time and entity fixed effects and leveraged attribute interactions to further examine the impact of instruction mode on high school students' education outcomes.
 
-Special thanks to Prof. Joel L. Horowitz and Prof. Richard Walker for their constructive feedback.
+Special thanks to Prof. Joel L. Horowitz and Prof. Richard Walker for their guidance and constructive feedback.
 
 ## Repository Description
 
 ### data_cleaning_component: 
 
-replication .ipynb files to obtain state-level .csv files in the final_data_component folder
+`data_cleaning_component` contains replication `.ipynb` files used to obtain state-level `.csv` files in `final_data_component`.
 
-● .ipynb file naming convention: data_cleaning_<outcome>_<state>.ipynb
+- `.ipynb` file naming convention: `data_cleaning_<outcome>_<state>.ipynb`
+- `<outcome>` is either mathpass, elapass, or dropout
+- `<state>` is the abbreviation of chosen U.S. state
 
 ### descriptive_analysis: 
 
