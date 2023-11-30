@@ -5,38 +5,42 @@ Special thanks to Prof. Joel L. Horowitz and Prof. Richard Walker for their guid
 
 ## Repository Description
 
+>[!TIP]
+>`<outcome>` is either mathpass, elapass, or dropout<br />
+>`<state>` is the abbreviation of chosen U.S. states
+
 ### data_cleaning_component: 
 
-Contains replication code `.ipynb` used to obtain state-level `.csv` files in `final_data_component`.
-
-- `.ipynb` files naming convention: `data_cleaning_<outcome>_<state>.ipynb`
-- `<outcome>` is either mathpass, elapass, or dropout
-- `<state>` is the abbreviation of chosen U.S. state
+Contains replication code `data_cleaning_<outcome>_<state>.ipynb` used to obtain state-level education outcomes files `<outcome>_all_state.csv`.
 
 ### descriptive_analysis: 
 
-Contains replication code `descriptive_analysis_replication.ipynb` and state-level `.csv` files used for descriptive analysis. 
+Contains replication code `descriptive_analysis_replication.ipynb` used to obtain state-level `.csv` files used for descriptive analysis. 
 
-- `.csv` files naming convention: `<outcome>_by_<interaction_variable>.csv`
+- Naming convention: `<outcome>_by_<interaction_variable>.csv`
 - `<outcome>` is either mathpass, elapass, or dropout
 - `<interaction_variable>` is either year, income, schooltype, black, hispanic, or black_hispanic
 
 ### figures: 
 
-Contains replication code `figure_replication.R` and `.pdf` files for figures.
+Contains replication code `figure_replication.R` and included figures in `.pdf` format.
 
-- `.pdf` files naming convention: `figure_<number>.pdf`
+- Naming convention: `figure_<number>.pdf`
 
 ### final_data_all_state: 
 
-Contains replication code `final_data_all_state_replication.ipynb` used to obtain all-state combined `.csv` files used for regression analysis.
+Contains replication code `final_data_all_state_replication.ipynb` and all-state combined `.csv` files used for regression analysis.
 
-- `.csv` files naming convention: `<outcome>_all_state.csv`
+- Naming convention: `<outcome>_all_state.csv`
 - `<outcome>` is either mathpass, elapass, or dropout
 
 ### final_data_component: 
 
-state-level .csv files used to obtain all-state combined .csv files in the final_data_all_state folder
+Contains state-level `.csv` files.
+
+- Naming convention: `<outcome>_<state>.csv`
+- `<outcome>` is either mathpass, elapass, or dropout
+- 
 
 ● .csv file naming convention: <outcome>_<state>.csv
 
