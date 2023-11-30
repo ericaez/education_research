@@ -7,13 +7,16 @@ Special thanks to Prof. Joel L. Horowitz and Prof. Richard Walker for their guid
 
 >[!TIP]
 >`<outcome>` is either mathpass, elapass, or dropout<br />
->`<state>` is the abbreviation of chosen U.S. states
+>`<state>` is the abbreviation of chosen U.S. states<br />
+>`<interaction_variable>` is either year, income, schooltype, black, hispanic, or black_hispanic
 
-### data_cleaning_component: 
+### data_combined: 
 
-Contains replication code `data_cleaning_<outcome>_<state>.ipynb` used to obtain state-level education outcomes files `<outcome>_all_state.csv`.
+Contains replication code `final_data_all_state.ipynb` used to obtain `final_data_all_state_<outcome>.csv`.
 
-### descriptive_analysis: 
+### data_component: 
+
+Contains replication code `data_cleaning_<state>_<outcome>.ipynb` used to obtain `final_data_<state>_<outcome>.csv`. 
 
 Contains replication code `descriptive_analysis_replication.ipynb` used to obtain state-level `.csv` files used for descriptive analysis. 
 
@@ -21,20 +24,21 @@ Contains replication code `descriptive_analysis_replication.ipynb` used to obtai
 - `<outcome>` is either mathpass, elapass, or dropout
 - `<interaction_variable>` is either year, income, schooltype, black, hispanic, or black_hispanic
 
-### figures: 
+### descriptive analysis: 
 
-Contains replication code `figure_replication.R` and included figures in `.pdf` format.
+- `net_change` contains `<outcome>_by_<interaction_variable>.csv`
+- `summary_statistics` contains `<outcome>_by_<interaction_variable>.csv` replication code `figure_replication.R` and included figures in `.pdf` format.
 
 - Naming convention: `figure_<number>.pdf`
 
-### final_data_all_state: 
+### figures: 
 
 Contains replication code `final_data_all_state_replication.ipynb` and all-state combined `.csv` files used for regression analysis.
 
 - Naming convention: `<outcome>_all_state.csv`
 - `<outcome>` is either mathpass, elapass, or dropout
 
-### final_data_component: 
+### generative scripts: 
 
 Contains state-level `.csv` files.
 
@@ -44,13 +48,13 @@ Contains state-level `.csv` files.
 
 ● .csv file naming convention: <outcome>_<state>.csv
 
-### python_regression: 
+### regressions: 
 
 replication .ipynb file to obtain regression analysis results in Python
 
 ● .ipynb file naming convention: pyreg_<regression type>_<outcome>.ipynb
 
-### stata_regression: 
+### tables: 
 
 replication .do file to obtain regression analysis results in Stata
 
