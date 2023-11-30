@@ -12,56 +12,38 @@ Special thanks to Prof. Joel L. Horowitz and Prof. Richard Walker for their guid
 
 ### data_combined: 
 
-Contains replication code `final_data_all_state.ipynb` used to obtain `final_data_all_state_<outcome>.csv`.
+Contains replication code `final_data_all_state.ipynb` for `final_data_all_state_<outcome>.csv`, which are final data files used to conduct regression analyses by outcome. 
 
 ### data_component: 
 
-Contains replication code `data_cleaning_<state>_<outcome>.ipynb` used to obtain `final_data_<state>_<outcome>.csv`. 
+Contains replication code `data_cleaning_<state>_<outcome>.ipynb` for `final_data_<state>_<outcome>.csv`, which are state-level data files merged in `final_data_all_state.ipynb`.
 
 Contains replication code `descriptive_analysis_replication.ipynb` used to obtain state-level `.csv` files used for descriptive analysis. 
 
-- Naming convention: `<outcome>_by_<interaction_variable>.csv`
-- `<outcome>` is either mathpass, elapass, or dropout
-- `<interaction_variable>` is either year, income, schooltype, black, hispanic, or black_hispanic
-
 ### descriptive analysis: 
 
-- `net_change` contains `<outcome>_by_<interaction_variable>.csv`
-- `summary_statistics` contains `<outcome>_by_<interaction_variable>.csv` replication code `figure_replication.R` and included figures in `.pdf` format.
-
-- Naming convention: `figure_<number>.pdf`
+Both `net_change` and `summary_statistics` contains `<outcome>_by_<interaction_variable>.csv`.
+- `net_change`: differences between (1) year 2021 and all-year averaged `<outcome>` and (2) year 2021 and year 2019 `<outcome>`, which are used for written description purposes in the research paper. 
+- `summary_statistics`: state-level `<outcome>` by year, race and ethnicity, income level, and school type, which are used to create visualizations in `figures`. 
 
 ### figures: 
 
-Contains replication code `final_data_all_state_replication.ipynb` and all-state combined `.csv` files used for regression analysis.
-
-- Naming convention: `<outcome>_all_state.csv`
-- `<outcome>` is either mathpass, elapass, or dropout
+Contains `<outcome>_by_<interaction_variable>.png` figures, visualizing state-level `outcome` changes by year, race and ethnicity, income level, and school type. 
 
 ### generative scripts: 
 
-Contains state-level `.csv` files.
-
-- Naming convention: `<outcome>_<state>.csv`
-- `<outcome>` is either mathpass, elapass, or dropout
-- 
-
-● .csv file naming convention: <outcome>_<state>.csv
+Contains replication code `descriptive_analysis_net_replication.R`, `descriptive_analysis_net_replication.R`, and `dfigure_generation_change_by_year_<interaction_variable>.R` used to create files in `descriptive anaysis` and `figures`. 
 
 ### regressions: 
 
-replication .ipynb file to obtain regression analysis results in Python
+Contains replication code for regression analyses in Python and Stata. 
 
-● .ipynb file naming convention: pyreg_<regression type>_<outcome>.ipynb
+- `python_wls_functions.py`: written functions used in `python_wls_results.ipynb` to automate weighted least squares regression analyses with two-way fixed effects, including attribute interactions.
+- `python_wls_results.ipynb`: results of the preliminary regression analyses (please prioritize the ones **with district-year interaction**, as they provide more robust and unbiased results). 
+- `stata_wls_all.do`: regression analyses replication file written in Stata language. 
 
 ### tables: 
 
-replication .do file to obtain regression analysis results in Stata
+Contains tables describing primary regression results, which are placed in the research paper Appendix. 
 
-● .do file naming convention: stata_<regression type>_<outcome>.do
 
-### table: 
-
-(1) replication .R file to obtain all included tables; and (2) .pdf tables
-● .R file naming convention: table_replication.R
-● .pdf file naming convention: table_<number>.pdf
