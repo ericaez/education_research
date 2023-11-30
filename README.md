@@ -1,5 +1,5 @@
 # Economics Education Research
-Building on Erica Zhou's final project for the course **ECON 383: Applied Econometrics** and our team's analysis in the [University of Chicago Econometrics Game 2023]{https://economics.northwestern.edu/about/news/chicago-econometrics-game-winners.html}, we extended our research to inform broader education policy. We conducted weighted least squares regression analyses with time and entity fixed effects and leveraged attribute interactions to further examine the impact of instruction mode on high school students' education outcomes.
+Building on Erica Zhou's final project for the course **ECON 383: Applied Econometrics** and our team's analysis in the [University of Chicago Econometrics Game 2023](https://economics.northwestern.edu/about/news/chicago-econometrics-game-winners.html), we extended our research to inform broader education policy. We conducted weighted least squares regression analyses with time and entity fixed effects and leveraged attribute interactions to further examine the impact of instruction mode on high school students' education outcomes.
 
 Special thanks to Prof. Joel L. Horowitz and Prof. Richard Walker for their constructive feedback.
 
